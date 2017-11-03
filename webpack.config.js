@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier')
 
 module.exports = {
   entry: './src/main.js',
@@ -66,6 +67,16 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        ie8: false,
+        mangle: {toplevel: true}
+      }
+    }),
+    new WebpackBuildNotifierPlugin({
+      title: "Mish.io",
+      logo: path.resolve("./assets/manifest_icons/web_hi_res_512.png"),
+      suppressSuccess: true
+    })
   ])
 }
