@@ -1,11 +1,13 @@
 importScripts('/worker-polyfill.js')
 self.addEventListener('install', function(event) {
-    
     console.log("Google Moogle worker installed")
     event.waitUntil(caches.open('mu').then(function(cache) {
         return cache.addAll([
             '/',
             '/index.html',
+            '/assets/ushakov.png',
+            '/assets/manifest_icons/web_hi_res_512.png',
+            '/dist/build.js',
             'https://fonts.googleapis.com/icon?family=Material+Icons',
             'https://unpkg.com/material-components-web@0.20.0/dist/material-components-web.min.css',
             'https://mish.io/Ushakov/images/logo/Placeholder.png',
@@ -29,17 +31,14 @@ self.addEventListener('install', function(event) {
             'https://pp.userapi.com/c840132/v840132898/3b192/79qTNvmbvz8.jpg',
             'https://vignette1.wikia.nocookie.net/logopedia/images/f/f7/2000px-Google_2015_monochrome.svg.png/revision/latest?cb=20150901175304',
           //'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png',
-          //'https://pngimg.com/uploads/ibm/ibm_PNG19648.png',
-            '/assets/ushakov.png',
-            '/assets/manifest_icons/web_hi_res_512.png',
-            '/dist/build.js'
+          //'https://pngimg.com/uploads/ibm/ibm_PNG19648.png'
         ])
     }))
 })
 
 self.addEventListener('fetch', function(event) {
-    console.log(event.request.url);
+    console.log("CACHED", event.request.url)
     event.respondWith(caches.match(event.request).then(function(response) {
-        return response || fetch(event.request);
+        return response || fetch(event.request)
     }))
 })
